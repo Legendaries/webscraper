@@ -1,4 +1,3 @@
-const path = require('path');
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
@@ -10,7 +9,12 @@ const socketPort = 8081;
 // Serve the HTML Page
 app.get('/', (req, res) => {
     let options = {root: __dirname + '/public/'};
-    res.sendFile(path.join(__dirname + '/index.html'), options)
+    res.sendFile('/index.html', options)
+});
+
+app.get('/index.js', (req, res) => {
+    let options = {root: __dirname + '/public/'};
+    res.sendFile('/index.js', options)
 });
 
 app.listen(htmlPort);

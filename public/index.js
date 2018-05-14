@@ -1,6 +1,7 @@
 // Create SocketIO instance, connect
 // TODO: Input ip/domain
-// TODO: Ex http://ip:8081
+// TODO: Ex. http://ip:8081
+// TODO: or  http://domain:8081
 let socket = io('');
 
 socket.on('response', data => {
