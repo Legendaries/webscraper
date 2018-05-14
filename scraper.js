@@ -2,8 +2,7 @@
     const rp = require('request-promise');
     const cheerio = require('cheerio');
 
-    // TODO: Input url
-    const url_base = '';
+    const url_base = process.env.S_URL_BASE;
     const space_char = '%20';
 
     function removeDuplicates(arr) {

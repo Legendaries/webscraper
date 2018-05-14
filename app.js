@@ -1,10 +1,12 @@
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const ip = require('ip');
+
 const scraper = require('./scraper');
 
-const htmlPort = 8080;
-const socketPort = 8081;
+const htmlPort = process.env.S_HTML_PORT || 8080;
+const socketPort = process.env.S_SOCKET_PORT || 8081;
 
 // Serve the HTML Page
 app.get('/', (req, res) => {
@@ -15,6 +17,13 @@ app.get('/', (req, res) => {
 app.get('/index.js', (req, res) => {
     let options = {root: __dirname + '/public/'};
     res.sendFile('/index.js', options)
+});
+
+app.get('/ipinfo', (req, res) => {
+   res.json({
+       address: ip.address(),
+       port: socketPort,
+   });
 });
 
 app.listen(htmlPort);

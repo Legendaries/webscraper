@@ -1,33 +1,37 @@
 // Create SocketIO instance, connect
-// TODO: Input ip/domain
-// TODO: Ex. http://ip:8081
-// TODO: or  http://domain:8081
-let socket = io('');
+let socket = '';
 
-socket.on('response', data => {
-    let values = JSON.parse(data);
+$.ajax({
+    dataType: 'json',
+    url: '/ipinfo',
+}).then((result) => {
+    socket = io(`${result.address}:${result.port}`);
 
-    let tr = document.createElement('tr');
-    tr.className = values[values.length - 1] ? 'bg-success' : '';
+    socket.on('response', data => {
+        let values = JSON.parse(data);
 
-    // Generate table from response
-    values.forEach((value) => {
-        let td = document.createElement('td');
-        if (value === true) {
-            let i = document.createElement('i');
-            i.className = 'fas fa-check-circle';
-            td.appendChild(i);
-        } else if (value === false) {
-            let i = document.createElement('i');
-            i.className = 'fas fa-times';
-            td.appendChild(i);
-        } else {
-            td.innerText = value;
-        }
-        tr.appendChild(td);
+        let tr = document.createElement('tr');
+        tr.className = values[values.length - 1] ? 'bg-success' : '';
+
+        // Generate table from response
+        values.forEach((value) => {
+            let td = document.createElement('td');
+            if (value === true) {
+                let i = document.createElement('i');
+                i.className = 'fas fa-check-circle';
+                td.appendChild(i);
+            } else if (value === false) {
+                let i = document.createElement('i');
+                i.className = 'fas fa-times';
+                td.appendChild(i);
+            } else {
+                td.innerText = value;
+            }
+            tr.appendChild(td);
+        });
+
+        $('#tablebody').append(tr);
     });
-
-    $('#tablebody').append(tr);
 });
 
 // Sends a message to the server via sockets
